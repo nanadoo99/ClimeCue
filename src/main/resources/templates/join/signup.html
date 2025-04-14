@@ -1,0 +1,59 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>회원 가입</title>
+    <!-- Bootstrap CSS -->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/css/bootstrap.min.css" rel="stylesheet">
+</head>
+<body>
+<div class="container">
+    <div class="row justify-content-center">
+        <div class="col-md-6">
+            <h2 class="text-center mt-5">회원 가입</h2>
+            <form action="/join/signup" method="post" th:object="${registerUserDto}">
+                <div class="form-group">
+                    <label for="username">사용자 이름</label>
+                    <input type="text" class="form-control" id="username" name="username" th:field="*{username}" required>
+
+                    <!-- 오류 메시지 -->
+<!--                    <div class="invalid-feedback" th:if="${#fields.hasErrors('username')}">-->
+                    <div class="text-danger" th:if="${#fields.hasErrors('username')}">
+                        <span th:errors="*{username}">잘못된 사용자 이름</span>
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="password">비밀번호</label>
+                    <input type="password" class="form-control" id="password" name="password" th:field="*{password}" required>
+
+                    <!-- 오류 메시지 -->
+<!--                    <div class="invalid-feedback" th:if="${#fields.hasErrors('password')}">-->
+                    <div class="text-danger" th:if="${#fields.hasErrors('password')}">
+                        <span th:errors="*{password}">잘못된 비밀번호</span> <!-- 오류 메시지가 없다면 기본 텍스트 표시 -->
+                    </div>
+                </div>
+
+                <div class="form-group">
+                    <label for="confirmPassword">비밀번호 확인</label>
+                    <input type="password" class="form-control" id="confirmPassword" name="confirmPassword" th:field="*{confirmPassword}" required>
+                    <div class="text-danger" th:if="${#fields.hasErrors('confirmPassword')}">
+                        <span th:errors="*{confirmPassword}">비밀번호 불일치</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="btn btn-primary btn-block">회원 가입</button>
+            </form>
+
+            <p class="text-center mt-3">이미 계정이 있으신가요? <a href="/join/login">로그인</a></p>
+        </div>
+    </div>
+</div>
+
+<!-- Bootstrap JS (optional for advanced features like modals) -->
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.9.3/dist/umd/popper.min.js"></script>
+<script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js"></script>
+</body>
+</html>
