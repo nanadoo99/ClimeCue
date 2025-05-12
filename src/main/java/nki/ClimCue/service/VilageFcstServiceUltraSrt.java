@@ -21,12 +21,15 @@ import org.springframework.stereotype.Service;
 import java.io.*;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
+import java.util.concurrent.TimeUnit;
 
 @Service
 public class VilageFcstServiceUltraSrt implements VilageFcstService {
 
     private static final Logger log = LoggerFactory.getLogger(VilageFcstServiceUltraSrt.class);
     private final VilageFcstApiClient vilageFcstApiClient = new VilageFcstApiClient();
+    private static final int MAX_RETRY_COUNT = 3;
+    private static final int RETRY_DELAY_SECONDS = 5;
 
     @Value("${open-api.vilage-fcst.service-key}")
     private String serviceKey;
@@ -45,6 +48,31 @@ public class VilageFcstServiceUltraSrt implements VilageFcstService {
         VilageFcstUltraSrtItems result = getFcst(ultraSrtNcstPath, baseDateAndBaseTime[0], baseDateAndBaseTime[1], vilageFcstNxNyDto);
 
         log.info("ultraSrtNcst result: {}", result);
+
+        return result;
+    }
+
+    public VilageFcstUltraSrtItems ultraSrtNcst2(VilageFcstNxNyDto vilageFcstNxNyDto) throws Exception {
+        String[] baseDateAndBaseTime = getBaseDateAndBaseTimeUltraSrctNcst();
+        int retryCount = 0;
+        VilageFcstUltraSrtItems result = null;
+
+        // 재시도
+        while (retryCount < MAX_RETRY_COUNT) {
+            try{
+                result = getFcst(ultraSrtNcstPath, baseDateAndBaseTime[0], baseDateAndBaseTime[1], vilageFcstNxNyDto);
+                log.info("ultraSrtNcst result: {}", result);
+                break; // 성공시 반복 종료
+            } catch (Exception e){
+                retryCount++;
+                if (retryCount < MAX_RETRY_COUNT) {
+                    log.warn("통신 오류 발생, {}초 후 재시도... (재시도 {}회)", RETRY_DELAY_SECONDS, retryCount);
+                    TimeUnit.SECONDS.sleep(RETRY_DELAY_SECONDS);
+                } else {
+                    throw e;
+                }
+            }
+        }
 
         return result;
     }
