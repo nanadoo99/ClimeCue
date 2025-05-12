@@ -41,7 +41,8 @@ if($('#previous-lat').val() != 0 && $('#previous-lng').val() != 0) {
 
             var locPosition = new kakao.maps.LatLng(defaultLatitude, defaultLongitude);
 
-            displayMarker(locPosition, unknownLocation);
+            // displayMarker(locPosition, unknownLocation);
+            displayMarker(locPosition, knownLocation);
         },
         {
             enableHighAccuracy: false, // 높은 정확도 요청 여부 (true일 경우 배터리 소모↑)
@@ -54,7 +55,8 @@ if($('#previous-lat').val() != 0 && $('#previous-lng').val() != 0) {
 
     var locPosition = new kakao.maps.LatLng(defaultLatitude, defaultLongitude);
 
-    displayMarker(locPosition, unknownLocation);
+    // displayMarker(locPosition, unknownLocation);
+    displayMarker(locPosition, knownLocation);
 }
 
 function invalidLocation() {

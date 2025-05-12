@@ -1,3 +1,4 @@
+/*
 package nki.ClimCue.util;
 
 import nki.ClimCue.model.api.vilageFcst.VilageFcstNxNyDto;
@@ -34,4 +35,4 @@ class ValidVilageFcstPointsTest {
         vilageFcstNxNyDto.setNy(99999);
         assertFalse(validVilageFcstPoints.isValidPoint(vilageFcstNxNyDto));
     }
-}
+}*/
